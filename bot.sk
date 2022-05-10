@@ -5,14 +5,14 @@ on command:
     cancel event
 
 options:
-	bot-token: OTU5OTQyMDE3MzU2NTUwMTc0.GsM8aV.qXN0vlLTuZSCZ01Sc1A4oK8TKm0rfyOlzZZxCI
-	mc-chat: 934812312727068743	
-	log-chat: 962071111288389642
-	info-log: 959976090653327400
-	punish-log: 973448194967076944
-	bot-chat: 934705760787628042
-	link-logs: 973572289109065848
-	server-name: Products
+	bot-token: 
+	mc-chat: 	
+	log-chat: 
+	info-log: 
+	punish-log: 
+	bot-chat: 
+	link-logs: 
+	server-name: 
 	
 on load:
 	login to "{@bot-token}" with the name "bot"
