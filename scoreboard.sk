@@ -1,0 +1,34 @@
+
+
+
+
+on join:
+	while player is online:
+		toggle scoreboard of player on
+		if player's world isn't "pvp":
+			scoreboard(player)
+		else:
+			wipe player's sidebar
+		wait 10 ticks
+	
+function scoreboard(plr: player):
+	set {_uuid} to uuid of {_plr}
+	set {_u} to uuid of {_plr}
+	set title of {_plr}'s scoreboard to "&e&lPRODUCTS"
+	set line 14 of {_plr}'s scoreboard to ""
+	set line 13 of {_plr}'s scoreboard to "<##ffc824>┏ <##ffc824>&lPLAYER"
+	set line 12 of {_plr}'s scoreboard to "<##ffc824>| &fMoney: &a$%format({balance::%{_u}%} ? 0)%"
+	set line 11 of {_plr}'s scoreboard to "<##ffc824>| &fTokens: &6✪<##ffc824>%format({tokens::%{_uuid}%} ? 0)%"
+	set line 10 of {_plr}'s scoreboard to "<##ffc824>| &fGens: &7%{gens.placed::%{_u}%} ? 0%&7/%{gens.max::%{_u}%} ? 40%"
+	set line 9 of {_plr}'s scoreboard to "<##ffc824>| &fLevel: &7 %{level::%{_u}%} ? 0%"
+	set line 8 of {_plr}'s scoreboard to "<##ffc824>┗ &fMulti: &7%{multi::%{_u}%} ? 1%"
+	set line 7 of {_plr}'s scoreboard to ""
+	set line 6 of {_plr}'s scoreboard to "<##ffc824>┏ <##ffc824>&lSERVER"
+	set line 5 of {_plr}'s scoreboard to "<##ffc824>| &fJoins: &7%amount of {joins::*}%"
+	set line 4 of {_plr}'s scoreboard to "<##ffc824>| &fOnline: &7%amount of all players%/75"
+	set line 3 of {_plr}'s scoreboard to "<##ffc824>| &fSold: &7%format({sold} ? 0)% &7(&a$%format({sold2} ? 0)%&7)"
+	set line 2 of {_plr}'s scoreboard to "<##ffc824>┗ &fTPS: &7%first element of tps%"
+	set line 1 of {_plr}'s scoreboard to ""
+	
+
+

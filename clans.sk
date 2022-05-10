@@ -1,0 +1,601 @@
+options:
+  #the prefix most messages start with
+  prefix: &e&lPRODUCTS &8» &7
+  #the prefix that most messages in the staff clan section start with
+  sprefix: &e&lStaff Clans &8» &7
+
+function BigNumberIntoLetter(n: number) :: string:
+  set {_l::*} to split "k,M,B,T,Qn,Qi,Sx" at ","
+  set {_i} to min(floor(log({_n})/3), size of {_l::*})
+  return "%{_n}%" if {_i} <= 0
+  set {_i2} to 1000^{_i}
+  return "%{_n}/{_i2}%%{_l::%{_i}%}%"
+
+command /clan [<text>] [<text>]:
+  aliases: /clans, /c
+  trigger:
+    if arg-1 is not set:
+      send "&c&lClans:"
+      send "&c/clan help &7- &eBrings up this menu"
+      send "&c/clan create <tag> &7- &eCreate a clan"
+      send "&c/clan leave &7- &eLeave the clan you are in"
+      send "&c/clan info [clan tag or clan member] &7- &eLook at the clan's info"
+      send "&c/clan invite <player> &7- &eInvite a player to join your clan"
+      send "&c/clan join &7- &eAccept a clan invite"
+      send "&c/clan kick <player> &7- &eKick a player from your clan"
+      send "&c/clan chat [msg] &7- &eTurn on or send a message in clan chat"
+      send "&c/clan chest &7- &eOpen your clan's shared storage"
+
+
+    else if arg-1 is "help":
+      send "&c&lClans:"
+      send "&c/clan help &7- &eBrings up this menu"
+      send "&c/clan create <tag> &7- &eCreate a clan"
+      send "&c/clan leave &7- &eLeave the clan you are in"
+      send "&c/clan info [clan tag or clan member] &7- &eLook at the clan's info"
+      send "&c/clan invite <player> &7- &eInvite a player to join your clan"
+      send "&c/clan join &7- &eAccept a clan invite"
+      send "&c/clan kick <player> &7- &eKick a player from your clan"
+      send "&c/clan chat [msg] &7- &eTurn on or send a message in clan chat"
+      send "&c/clan chest &7- &eOpen your clan's shared storage"
+
+
+
+    else if arg-1 is "create" or "make" or "new":
+      if {clans::inclan::%player%} is not set:
+        if arg-2 is set:
+          if {clans::clan::*} does not contain arg-2:
+            if length of arg-2 <= 10:
+              if {clans::wait::%player%} is not set:
+                add arg-2 to {clans::clan::*}
+                set {clans::clan::%arg-2%::owner} to player
+                set {clans::inclan::%player%} to arg-2
+                set {clans::clan::%arg-2%::playerlimit} to 4
+                set {clans::wait::%player%} to now
+                send "{@prefix}You created the clan %arg-2%"
+              else:
+                if difference between {clans::wait::%player%} and now >= 1 minute:
+                  add arg-2 to {clans::clan::*}
+                  set {clans::clan::%arg-2%::owner} to player
+                  set {clans::inclan::%player%} to arg-2
+                  set {clans::clan::%arg-2%::playerlimit} to 6
+                  set {clans::wait::%player%} to now
+                  send "{@prefix}You created the clan %arg-2%"
+                else:
+                  set {_t} to difference between {clans::wait::%player%} and now
+                  set {_time} to difference between {_t} and 1 day
+                  send "{@prefix}You have to wait another %{_time}% before you can create or join a clan"
+            else:
+              send "{@prefix}Your clan tag has to be 5 characters or less"
+          else:
+            send "{@prefix}A clan with that name already exists"
+        else:
+          send "{@prefix}You need to give you clan a name"
+      else:
+        set {_clan} to {clans::inclan::%player%}
+        send "{@prefix}You are already in the clan %{_clan}%"
+
+
+    else if arg-1 is "leave" or "quit":
+      if {clans::inclan::%player%} is set:
+        set {_clan} to {clans::inclan::%player%}
+        if {clans::clan::%{_clan}%::owner} is player:
+          send "{@prefix}You are the owner of this clan"
+          send "{@prefix}If you leave your clan will be deleted"
+          send "{@prefix}Type /clan confirm within 30 seconds to leave and delete the clan"
+          set {clans::leavetimer::%player%} to now
+        else:
+          remove player from {clans::clan::%{_clan}%::members::*}
+          delete {clans::inclan::%player%}
+          delete {clans::clanchat::%player%}
+          send "{@prefix}You have left the clan %{_clan}%"
+      else:
+        send "{@prefix}You are not in a clan"
+
+
+    else if arg-1 is "confirm":
+      if difference between {clans::leavetimer::%player%} and now <= 30 seconds:
+        set {_clan} to {clans::inclan::%player%}
+        loop {clans::clan::%{_clan}%::members::*}:
+          delete {clans::inclan::%loop-value%}
+          {clans::clanchat::%loop-value%}
+          remove loop-value from {clans::clan::%{_clan}%::members::*}
+        delete {clans::clan::%{_clan}%::*}
+        remove {_clan} from {clans::clan::*}
+        delete {clans::clan::%{_clan}%}
+        delete {clans::inclan::%player%}
+        delete {clans::clanchat::%player%}
+        send "{@prefix}%{_clan}% &ehas been deleted since you left"
+
+
+    else if arg-1 is "info":
+      if arg-2 is set:
+        set {_clan} to arg-2
+      else:
+        set {_clan} to {clans::inclan::%player%}
+      if {_clan} is set:
+        if {clans::clan::*} contains {_clan}:
+          set {_owner} to {clans::clan::%{_clan}%::owner}
+          set {_playerlimit} to {clans::clan::%{_clan}%::playerlimit}
+          set {_loop} to 0
+          loop {clans::clan::%{_clan}%::members::*}:
+            if {_loop} is 0:
+              set {_members} to "%loop-value%"
+              add 1 to {_loop}
+            else:
+              set {_members} to "%{_members}%, %loop-value%"
+          if {_members} is not set:
+            set {_members} to "There are no members"
+
+          send "&c&lClans:"
+          send "&cClan Name: &e%{_clan}%"
+          send "&cClan Owner: &e%{_owner}%"
+          send "&cClan Memebers: &e%{_members}%"
+          send "&cMax Clan Members: &e%{_playerlimit}%"
+
+        else if {clans::inclan::%arg-2%} is set:
+          set {_clan} to {clans::inclan::%arg-2%}
+          set {_owner} to {clans::clan::%{_clan}%::owner}
+          set {_playerlimit} to {clans::clan::%{_clan}%::playerlimit}
+          set {_loop} to 0
+          loop {clans::clan::%{_clan}%::members::*}:
+            if {_loop} is 0:
+              set {_members} to "%loop-value%"
+              add 1 to {_loop}
+            else:
+              set {_members} to "%{_members}%, %loop-value%"
+          if {_members} is not set:
+            set {_members} to "There are no members"
+
+          send "&c&lClans:"
+          send "&cClan Name: &e%{_clan}%"
+          send "&cClan Owner: &e%{_owner}%"
+          send "&cClan Memebers: &e%{_members}%"
+          send "&cMax Clan Members: &e%{_playerlimit}%"
+        else:
+          send "{@prefix}That clan doesn't exist"
+
+
+    else if arg-1 is "invite":
+      if {clans::inclan::%player%} is set:
+        set {_clan} to {clans::inclan::%player%}
+        if {clans::clan::%{_clan}%::owner} is player:
+          if arg-2 is set:
+            set {_arg2} to arg-2 parsed as offline player
+            if {clans::inclan::%{_arg2}%} is not set:
+              set {clans::invitetimer::%{_arg2}%} to now
+              set {clans::inviteclan::%{_arg2}%} to {_clan}
+              send "{@prefix}You invited %{_arg2}% &eto %{_clan}%"
+              send "{@prefix}%player% &einvited you to %{_clan}%" to {_arg2}
+              send "{@prefix}You have 30 seconds to accept by typing /clan join" to {_arg2}
+            else:
+              send "{@prefix}%{_arg2}% &eis already in a clan"
+          else:
+            send "{@prefix}You have to specify a player to invite"
+        else:
+          send "{@prefix}You are not the owner of %{_clan}%"
+      else:
+        send "{@prefix}You are not in a clan"
+
+
+    else if arg-1 is "join":
+      if difference between {clans::invitetimer::%player%} and now <= 30 seconds:
+        set {_clan} to {clans::inviteclan::%player%}
+        set {_members} to size of {clans::clan::%{_clan}%::members::*} + 1
+        if {clans::clan::%{_clan}%::playerlimit} > {_members}:
+          if {clans::wait::%player%} is not set:
+            add player to {clans::clan::%{_clan}%::members::*}
+            set {clans::inclan::%player%} to {_clan}
+            set {clans::wait::%player%} to now
+            loop {clans::clan::%{_clan}%::members::*}:
+              send "{@prefix}%player% &ehas joined the clan" to loop-value
+            send "{@prefix}%player% &ehas joined the clan" to {clans::clan::%{_clan}%::owner}
+          else:
+            if difference between {clans::wait::%player%} and now >= 1 minute:
+              add player to {clans::clan::%{_clan}%::members::*}
+              set {clans::inclan::%player%} to {_clan}
+              set {clans::wait::%player%} to now
+              loop {clans::clan::%{_clan}%::members::*}:
+                send "{@prefix}%player% &ehas joined the clan" to loop-value
+              send "{@prefix}%player% &ehas joined the clan" to {clans::clan::%{_clan}%::owner}
+            else:
+              set {_t} to difference between {clans::wait::%player%} and now
+              set {_time} to difference between {_t} and 1 day
+              send "{@prefix}You have to wait another %{_time}% before you can create or join a clan"
+        else:
+          send "{@prefix}This clan is full"
+      else:
+        send "{@prefix}You do not have any pending invites"
+
+
+    else if arg-1 is "kick":
+      if {clans::inclan::%player%} is set:
+        set {_clan} to {clans::inclan::%player%}
+        if {clans::clan::%{_clan}%::owner} is player:
+          if arg-2 is set:
+            set {_arg2} to arg-2
+            if {clans::clan::%{_clan}%::members::*} contains {_arg2}:
+              remove {_arg2} from {clans::clan::%{_clan}%::members::*}
+              delete {clans::inclan::%{_arg2}%}
+              delete {clans::clanchat::%{_arg2}%}
+              send "{@prefix}%{_arg2}% &ewas kicked from the clan"
+            else:
+              send "{@prefix}%{_arg2}% &eis not in your clan"
+          else:
+            send "{@prefix}You need to specify who to kick"
+        else:
+          send "{@prefix}Only clan owners can kick people"
+      else:
+        send "{@prefix}You are not in a clan"
+
+
+    else if arg-1 is "chat" or "message":
+      if {clans::inclan::%player%} is set:
+        set {_clan} to {clans::inclan::%player%}
+        if {clans::cooldown::%player%} is not set:
+          set {clans::cooldown::%player%} to now
+          set {_cooldown} to 1 minute
+        else:
+          set {_cooldown} to difference between {clans::cooldown::%player%} and now
+        if arg-2 is set:
+          if player does not have permission "cooldown.bypass":
+            if {_cooldown} > {slowness}:
+              if {clans::lastmsg::%player%} is not arg-2:
+                set {clans::cooldown::%player%} to now
+                set {clans::lastmsg::%player%} to arg-2
+                if {chatcolor::%player's uuid%} is set:
+                  if {chatcolor::%player's uuid%} is not "rainbow":
+                    set {_color} to {chatcolor::%player's uuid%}
+                  else:
+                    set {_color} to "&f"
+                else:
+                  set {_color} to "&7"
+                loop {clans::clan::%{_clan}%::members::*}:
+                  send "&c[Clan Chat] %player% &7» %{_color}%%arg-2%" to loop-value
+                send "&c[Clan Chat] %player% &7» %{_color}%%arg-2%" to {clans::clan::%{_clan}%::owner}
+                loop {clans::admin::clanchat::%arg-2%::*}:
+                  send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%arg-2%" to loop-value
+                loop {clans::admin::clanchat::everyClan::*}:
+                  send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%arg-2%" to loop-value
+              else:
+                send "{@prefix}Please don't repeat yourself"
+            else:
+              message "&cYou can only talk every %{slowness}%&c!"
+          else:
+            if {chatcolor::%player's uuid%} is set:
+              if {chatcolor::%player's uuid%} is not "rainbow":
+                set {_color} to {chatcolor::%player's uuid%}
+              else:
+                set {_color} to "&f"
+            else:
+              set {_color} to "&7"
+            loop {clans::clan::%{_clan}%::members::*}:
+              send "&c[Clan Chat] %player% &7» %{_color}%%arg-2%" to loop-value
+            send "&c[Clan Chat] %player% &7» %{_color}%%arg-2%" to {clans::clan::%{_clan}%::owner}
+            loop {clans::admin::clanchat::%arg-2%::*}:
+              send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%arg-2%" to loop-value
+            loop {clans::admin::clanchat::everyClan::*}:
+              send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%arg-2%" to loop-value
+        else:
+          if {clans::clanchat::%player%} is set:
+            delete {clans::clanchat::%player%}
+            send "{@prefix}Your messages will be sent in normal chat"
+          else:
+            set {clans::clanchat::%player%} to true
+            send "{@prefix}Your messages will be sent in clan chat"
+      else:
+        send "{@prefix}You are not in a clan"
+
+
+    else if arg-1 is "chest" or "storage" or "locker":
+      if {clans::inclan::%player%} is set:
+        set {_clan} to {clans::inclan::%player%}
+        if {clans::clan::%{_clan}%::chestInUse} is not set:
+          if {clans::admin::lockChest::%{_clan}%} is not set:
+            open virtual chest inventory with size 6 named "&8%{_clan}%&8's Clan Chest" to player
+            set {_slot} to 0
+            set {clans::clan::%{_clan}%::chestInUse} to player
+            loop {clans::clan::%{_clan}%::chest::*}:
+              set slot {_slot} of player's current inventory to loop-value
+              add 1 to {_slot}
+          else:
+            send "{@prefix}Your chest is temporarily locked"
+        else:
+          set {_p} to {clans::clan::%{_clan}%::chestInUse}
+          send "{@prefix}The community chest is currently in use. Wait for %{_p}% &eto stop using the chest."
+      else:
+        send "{@prefix}You are not in a clan"
+
+
+    
+on chat:
+  if {clans::clanchat::%player%} is set:
+    cancel event
+    if player does not have permission "cooldown.bypass":
+      if {clans::cooldown::%player%} is not set:
+        set {clans::cooldown::%player%} to now
+        set {_cooldown} to 1 minute
+      else:
+        set {_cooldown} to difference between {clans::cooldown::%player%} and now
+      if {_cooldown} > {slowness}:
+        if {clans::lastmsg::%player%} is not message:
+          set {clans::cooldown::%player%} to now
+          set {clans::lastmsg::%player%} to message
+          if {chatcolor::%player's uuid%} is set:
+            if {chatcolor::%player's uuid%} is not "rainbow":
+              set {_color} to {chatcolor::%player's uuid%}
+            else:
+              set {_color} to "&f"
+          else:
+            set {_color} to "&7"
+          set {_clan} to {clans::inclan::%player%}
+          loop {clans::clan::%{_clan}%::members::*}:
+            send "&c[Clan Chat] %player% &7» %{_color}%%message%" to loop-value
+          send "&c[Clan Chat] %player% &7» %{_color}%%message%" to {clans::clan::%{_clan}%::owner}
+          loop {clans::admin::clanchat::%{_clan}%::*}:
+            send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%message%" to loop-value
+          loop {clans::admin::clanchat::everyClan::*}:
+            send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%message%" to loop-value
+        else:
+          send "{@prefix}Please don't repeat yourself"
+      else:
+        send "{@prefix}You can only talk every %{slowness}%&c!"
+    else:
+      if {chatcolor::%player's uuid%} is set:
+        if {chatcolor::%player's uuid%} is not "rainbow":
+          set {_color} to {chatcolor::%player's uuid%}
+        else:
+          set {_color} to "&f"
+      else:
+        set {_color} to "&7"
+      set {_clan} to {clans::inclan::%player%}
+      loop {clans::clan::%{_clan}%::members::*}:
+        send "&c[Clan Chat] %player% &7» %{_color}%%message%" to loop-value
+      send "&c[Clan Chat] %player% &7» %{_color}%%message%" to {clans::clan::%{_clan}%::owner}
+      loop {clans::admin::clanchat::%{_clan}%::*}:
+        send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%message%" to loop-value
+      loop {clans::admin::clanchat::everyClan::*}:
+        send "&c[Clan Chat] &f[&c%{_clan}%&f] %player% &7» %{_color}%%message%" to loop-value
+
+on quit:
+  delete {clans::lastmsg::%player%}
+
+on inventory close:
+  set {_clan} to {clans::inclan::%player%}
+  if name of player's inventory is "&8%{_clan}%&8's Clan Chest":
+    delete {clans::clan::%{_clan}%::chest::*}
+    delete {clans::clan::%{_clan}%::chestInUse}
+    set {_slot} to 0
+    loop 54 times:
+      add slot {_slot} of player's current inventory to {clans::clan::%{_clan}%::chest::*}
+      add 1 to {_slot}
+  if name of player's inventory contains "&8's Clan Chest":
+    if player has permission "clans.admin.chest.edit":
+      set {_name} to name of player's inventory
+      set {_name} to first (length of {_name} - 15) characters of {_name}
+      set {_clan} to uncolored {_name}
+      delete {clans::clan::%{_clan}%::chest::*}
+      delete {clans::clan::%{_clan}%::chestInUse}
+      set {_slot} to 0
+      loop 54 times:
+        add slot {_slot} of player's current inventory to {clans::clan::%{_clan}%::chest::*}
+        add 1 to {_slot}
+      delete {clans::admin::lockChest::%{_clan}%}
+
+on inventory click:
+  if name of player's inventory contains "&8's Clan Chest":
+    set {_name} to name of player's inventory
+    set {_name} to first (length of {_name} - 15) characters of {_name}
+    set {_clan} to uncolored {_name}
+    if {_clan} is not {clans::inclan::%player%}:
+      if player does not have permission "clans.admin.chest.edit":
+        cancel event
+
+
+
+command /staffclan [<text>] [<offlineplayer>] [<offlineplayer>]:
+  aliases: /sclan, /adminclan, /aclan, /ac
+  permission: clans.staff
+  permission message: {@prefix}I think you meant to do /clans
+  trigger:
+    if arg-1 is not set:
+      send "&c&lClans (Staff Mode):"
+      send "&c/staffclan help &7- &eBrings up this menu"
+      send "&c/staffclan help permissions &7- &eExplains all of the permissions"
+      send "&C/staffclan list &7- &eSend you a list of all the clans"
+      send "&c/staffclan delete <clan name> &7- &eDelete a clan"
+      send "&c/staffclan kick <player> &7- &eKick a player out of a clan"
+      send "&c/staffclan chat [clan] &7- &eLets you see all clan messages or just from a specific clan"
+      send "&c/staffclan chest <clan> &7- &eLets you look at a clan chest"
+      send "&c/staffclan clearcooldown [player] &7- &eResets a player's cooldown to join/create a clan"
+      send "&c/staffclan setowner <player> <clan> &7- &eMakes the specifed player the owner of the clan"
+
+    else if arg-1 is "help":
+      if arg-2 is "permissions" or "perms" or "permission" or "perm":
+        send "&c&lClans Permissions:"
+        send "&cclans.staff &7- &eGives the player access to /staffclan"
+        send "&cclans.admin.delete &7- &eLets the player delete clans"
+        send "&cclans.admin.kick &7- &eLet the player kick people out of clans"
+        send "&cclans.admin.chat &7- &eLets the player look at clan messages from other clans"
+        send "&cclans.admin.chest.view &7- &eLets the player look at other clan chests"
+        send "&cclans.admin.chest.edit &7- &eLets the player use other clan chests"
+        send "&cclans.admin.clearcooldown &7- &eLets the player clear cooldowns"
+        send "&cclans.admin.setowner &7- &eLets the player set the owner of a clan"
+        send "&cclans.admin.resetplayer &7- &eLets the player reset other people's clan stuff"
+      else:
+        send "&c&lClans (Staff Mode):"
+        send "&c/staffclan help &7- &eBrings up this menu"
+        send "&c/staffclan help permissions &7- &eExplains all of the permissions"
+        send "&C/staffclan list &7- &eSend you a list of all the clans"
+        send "&c/staffclan delete <clan name> &7- &eDelete a clan"
+        send "&c/staffclan kick <player> &7- &eKick a player out of a clan"
+        send "&c/staffclan chat [clan] &7- &eLets you see all clan messages or just from a specific clan"
+        send "&c/staffclan chest <clan> &7- &eLets you look at a clan chest"
+        send "&c/staffclan clearcooldown [player] &7- &eResets a player's cooldown to join/create a clan"
+        send "&c/staffclan setowner <player> <clan> &7- &eMakes the specifed player the owner of the clan"
+
+    else if arg-1 is "list":
+      set {_l} to 1
+      loop {clans::clan::*}:
+        if {_l} is 1:
+          set {_list} to "&c%loop-value%"
+        else:
+          set {_list} to "%{_list}%&e, &c%loop-value%"
+        add 1 to {_l}
+      send "{@sprefix}Here is a list of all the clans:"
+      send "%{_list}%"
+
+
+    else if arg-1 is "delete":
+      if player has permission "clans.admin.delete":
+        if arg-2 is set:
+          if {clans::clan::*} contains arg-2:
+            set {_clan} to arg-2
+            set {_owner} to {clans::clan::%{_clan}%::owner}
+            loop {clans::clan::%{_clan}%::members::*}:
+              delete {clans::inclan::%loop-value%}
+              delete {clans::clanchat::%loop-value%}
+              remove loop-value from {clans::clan::%{_clan}%::members::*}
+            delete {clans::clan::%{_clan}%::*}
+            remove {_clan} from {clans::clan::*}
+            delete {clans::clan::%{_clan}%}
+            delete {clans::inclan::%{_owner}%}
+            delete {clans::clanchat::%{_owner}%}
+            send "{@sprefix}%{_clan}% &ehas been deleted"
+          else:
+            send "{@sprefix}Couldn't find that clan"
+        else:
+          send "{@sprefix}You need to specify a clan"
+      else:
+        send "{@sprefix}You don't have permission to do that"
+
+
+    else if arg-1 is "kick":
+      if player has permission "clans.admin.kick":
+        if arg-2 is set:
+          if {clans::inclan::%arg-2%} is set:
+            set {_clan} to {clans::inclan::%arg-2%}
+            if {clans::clan::%{_clan}%::owner} is not arg-2:
+              delete {clans::inclan::%arg-2%}
+              delete {clans::clanchat::%arg-2%}
+              remove arg-2 from {clans::clan::%{_clan}%::members::*}
+            else:
+              send "{@sprefix}%arg-2% &eis the owner of %{_clan}%"
+              send "{@sprefix}If you want to kick %arg-2% &eyou have to delete the clan"
+              send "{@sprefix}/staffclan delete %{_clan}%"
+          else:
+            send "{@sprefix}That player isn't in a clan"
+        else:
+          send "{@sprefix}You need to specify a player"
+      else:
+        send "{@sprefix}You don't have permission to do that"
+
+    else if arg-1 is "chat":
+      if player has permission "clans.admin.chat":
+        if arg-2 is set:
+          if {clans::clan::*} contains arg-2:
+            set {_clan} to arg-2
+            if {clans::admin::clanchat::%{_clan}%::*} contains player:
+              send "{@sprefix}You will no longer see clan messages from %{_clan}%"
+              remove player from {clans::admin::clanchat::%{_clan}%::*}
+            else:
+              send "{@prefix}You will now see clan messages from %{_clan}%"
+              add player to {clans::admin::clanchat::%{_clan}%::*}
+          else:
+            send "{@sprefix}Couldn't find that clan"
+        else:
+          if {clans::admin::clanchat::everyClan::*} contains player:
+            send "{@sprefix}You will no longer see clan massages from all clans"
+            remove player from {clans::admin::clanchat::everyClan::*}
+          else:
+            send "{@sprefix}You will now see clan messages from all clans"
+            add player to {clans::admin::clanchat::everyClan::*}
+
+    else if arg-1 is "chest":
+      if player has permission "clans.admin.chest.edit" or "clans.admin.chest.view":
+        if arg-2 is set:
+          if {clans::clan::*} contains arg-2:
+            set {_clan} to arg-2
+            if {clans::inclan::%player%} is not {_clan}:
+              if player has permission "clans.admin.chest.edit":
+                if {clans::clan::%{_clan}%::chestInUse} is set:
+                  set {_p} to {clans::clan::%{_clan}%::chestInUse}
+                  close {_p}'s inventory
+                  send "{@prefix}Your Chest has been locked"
+                  wait 1 tick
+                set {clans::admin::lockChest::%{_clan}%} to true
+              open virtual chest inventory with size 6 named "&8%{_clan}%&8's Clan Chest" to player
+              set {_slot} to 0
+              loop {clans::clan::%{_clan}%::chest::*}:
+                set slot {_slot} of player's current inventory to loop-value
+                add 1 to {_slot}
+            else:
+              send "{@sprefix}Use /clans chest to open your clan chest"
+          else:
+            send "{@sprefix}Couldn't find that clan"
+        else:
+          send "{@sprefix}You need to specify a clan"
+      else:
+        send "{@sprefix}You do not have permission to look at other clan chests"
+
+
+
+    
+    else if arg-1 is "resetcooldown" or "joincooldown" or "clearcooldown":
+      if player has permission "clans.admin.clearcooldown":
+        if arg-2 is set:
+          delete {clans::wait::%arg-2%}
+          send "{@sprefix}%arg-2% &ecan now join a clan or more their own"
+          set {_p} to arg-2
+          send "{@prefix}Your create a clan/join a clan cooldown has been reset" to {_p}
+        else:
+          delete {clans::wait::%player%}
+          send "{@prefix}Your create a clan/join a clan cooldown has been reset"
+      else:
+        send "{@sprefix}You do not have permission to clear cooldowns"
+
+    else if arg-1 is "setowner" or "newowner" or "owner" or "makeowner" or "changeowner":
+      if player has permission "clans.admin.setowner":
+        if arg-2 is set:
+          if arg-3 is set:
+            if {clans::clan::*} contains arg-3:
+              set {_clan} to arg-3
+              set {_oldOwner} to {clans::clan::%{_clan}%::owner}
+              delete {clans::inclan::%{_oldOwner}%}
+              set {clans::clan::%{_clan}%::owner} to arg-2
+              set {clans::inclan::%arg-2%} to {_clan}
+            else:
+              send "{@sprefix}Couldn't find that clan"
+          else:
+            send "{@sprefix}You need to specify a clan"
+        else:
+          send "{@sprefix}You need to specify a player"
+      else:
+        send "{@sprefix}You do not have permission to change a clan's owner"
+
+    else if arg-1 is "resetplayer":
+      if player has permission "clans.admin.resetplayer":
+        if arg-2 is set:
+          if {clans::inclan::%player%} is set:
+            set {_clan} to {clans::inclan::%player%}
+          else:
+            loop {clans::clan::*}:
+              if {clans::clan::%loop-index%::owner} is arg-2:
+                delete {clans::clan::%loop-index%::owner}
+                set {_clan} to loop-index
+                delete {clans::inclan::%arg-2%}
+                send "{@sprefix}%{_clan}% &eno longer has a leader"
+              if {clans::clan::%loop-index%::members::*} contains arg-2:
+                set {_clan} to loop-index
+                remove arg-2 from {clans::clan::%{_clan}%::members::*}
+                delete {clans::inclan::%arg-2%}
+          if {_clan} is set:
+            send "{@sprefix}You have reset %arg-2%'s clan data"
+            send "{@prefix}All of your clan data has been reset" to arg-2
+          else:
+            send "{@sprefix}Couldn't find any info on %arg-2%"
+
+
+
+    else:
+      send "{@sprefix}Invalid command. Do /staffclans help for help"

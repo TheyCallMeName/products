@@ -1,0 +1,262 @@
+on command:
+  if full command contains "merge" and "all":
+    cancel event
+  if full command contains "m" and "all":
+    cancel event
+
+options:
+	bot-token: OTU5OTQyMDE3MzU2NTUwMTc0.GsM8aV.qXN0vlLTuZSCZ01Sc1A4oK8TKm0rfyOlzZZxCI
+	mc-chat: 934812312727068743	
+	log-chat: 962071111288389642
+	info-log: 959976090653327400
+	punish-log: 973448194967076944
+	bot-chat: 934705760787628042
+	link-logs: 973572289109065848
+	server-name: Products
+	
+on load:
+	login to "{@bot-token}" with the name "bot"
+
+every 3 seconds:
+   set presence of bot "bot" to watching "Products.minehut.gg [%amount of all players%/75]"
+   
+command /forcelogin:
+	permission: op
+	trigger:
+		login to "{@bot-token}" with the name "bot"
+
+on chat:
+	make embed:	
+		set color of last made embed to black
+		set description of embed to "**%player's group in uppercase%** `%player%`: %message%"
+		set timestamp of embed to now
+	send last made embed to channel with id "{@mc-chat}"
+on quit:
+	make embed:	
+		set color of last made embed to red
+		set description of embed to "`%player%` has left the game."
+		set timestamp of embed to now
+	send last made embed to channel with id "{@mc-chat}"
+on join:
+	make embed:	
+		set color of last made embed to green
+		set description of embed to "`%player%` has joined the game."
+		set timestamp of embed to now
+	send last made embed to channel with id "{@mc-chat}"
+on command:
+	make embed:
+		set color of last made embed to white
+		set description of embed to "[**%player's group in uppercase%**] `%player%` /%full command%"
+		set timestamp of embed to now
+	send last made embed to channel with id "{@log-chat}"
+	
+on command:
+	if command is "tempban":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to {_s::3}
+		set {_rsn} to {_s::4}
+	if command is "ban":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to "N/A"
+		set {_rsn} to {_s::3}
+	if command is "mute":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to "N/A"
+		set {_rsn} to {_s::3}
+	if command is "tempmute":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to {_s::3}
+		set {_rsn} to {_s::4}
+	if command is "kick":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to "N/A"
+		set {_rsn} to {_s::3}
+	if command is "warn":
+		set {_s::*} to full command split at " "
+		set {_player} to {_s::2}
+		set {_time} to "N/A"
+		set {_rsn} to {_s::3}
+	if {_player} or {_rsn} or {_time} is set:
+		make embed:
+			set {_t} to now
+			remove 4 hours from {_t}
+			set color of last made embed to dark red
+			set title of embed to "PUNISH"
+			if {_rsn} is set:
+				set {_rsn} to "%{_s::*}%"
+				replace all "%{_player}%" in {_rsn} with ""
+				replace all command in {_rsn} with ""
+				replace all "%{_time}%" in {_rsn} with ""
+				replace all "and" in {_rsn} with ""
+				replace all " ," in {_rsn} with ""
+				replace all "," in {_rsn} with ""
+			if {_player} is set:
+				add inline field named "**OFFENDER**" with value "- `%{_player}%`" to last made embed
+			if {_time} is set:
+				add inline field named "**TIME**" with value "- `%{_time}%`" to last made embed
+			if {_rsn} is set:
+				add inline field named "**REASON**" with value "- `%{_rsn}%`" to last made embed
+			add inline field named "**STAFF**" with value "`- %executor%`" to last made embed
+			add inline field named "**TYPE**" with value "`- %command%`" to last made embed
+			add inline field named "**EXECUTED AT**" with value "`- %{_t}% [EST]`" to last made embed
+		send last made embed to channel with id "{@punish-log}"
+		stop
+
+	
+function discordStats():
+	delete discord entity {stats}
+	set {_uptime} to placeholder "server_uptime"
+	set {_ram} to placeholder "server_ram_used"
+	set {_ram1} to placeholder "server_ram_total"
+	set {_ram2} to placeholder "server_ram_free"
+	set {_totalram} to "%{_ram}%/%{_ram1}% (%{_ram2}% RAM free)"
+	set {_entities} to placeholder "server_total_entities"
+	set {_p::*} to all players where [input has permission "staff"]
+	make embed:
+		set the title of embed to "**STATISTICS**"
+		set the description of embed to "{@server-name}.minehut.gg"
+		set the color of the embed to yellow
+		add inline field named "**TPS**" with value "**%tps from last minute%**" to embed
+		add inline field named "**RAM**" with value "**%{_totalram}%**" to embed
+		add inline field named "**UPTIME**" with value "`%{_uptime}%`" to embed
+		add inline field named "**ENTITES**" with value "`%{_entities}%`" to embed
+		add field named "**ONLINE** (%size of online players%/%maximum players%)" with value "`%all players%%nl%`" to embed
+		add field named "**STAFF**" with value "`%{_p::*}%`" to embed
+	send last made embed to channel with id "{@info-log}" and store it in {stats}
+
+every 2 minutes:
+	discordStats()
+	
+command /refreshdiscordstats:
+	permission: op
+	trigger:
+		discordStats()
+		message "Complete."
+		
+on message receive:
+    if event-member has permission administrator:
+        if id of event-channel is "{@mc-chat}":
+            if "%event-message%" isn't "" or "<none>":
+                if event-message is set:
+                    broadcast "&e&lDISCORD &8» &f%discord name of event-member%: &7%event-message%"
+                    stop
+		
+discord command <cmd [<text>]:
+	trigger:
+		if event-member has permission administrator:
+			console command arg-1
+			reply with "You did the command `/%arg-1%`"
+			
+discord command <tps:
+	trigger:
+		make embed:
+			set title of embed to "SERVER'S TPS"
+			set color of embed to orange
+			set description of embed to "**TPS:** %tps%"
+			set timestamp of embed to now
+		reply with last embed
+
+discord command <online:
+	trigger:
+		make embed:
+			set title of embed to "PLAYER'S ONLINE"
+			set color of embed to orange
+			set description of embed to "**Player's Online:** %amount of online players%/75"
+			set timestamp of embed to now
+		reply with last embed
+		
+discord command <link [<player>]:
+	trigger:
+		delete discord entity event-message
+		wait 1 tick
+		if arg-1 is set:
+			if arg-1 is online:
+				if {linked::%arg-1's uuid%} isn't set:
+					if {lr::%arg-1's uuid%} isn't set:
+						make embed:
+							set color of embed to yellow
+							set title of embed to "LINKING"
+							set description of embed to "You have sent a link request to `%arg-1%` do ""/link"" ingame to accept!"
+							set timestamp of embed to now
+						reply with last made embed
+						set {lr::%arg-1's uuid%} to id of event-member
+						wait 2 ticks
+						message "&e&lPRODUCTS &8| &7You've been sent a link request by &e@%discord name of event-member%##%discord tag of event-member% &b[/link accept or /link decline]" to arg-1
+						stop 
+					else:
+						make embed:
+							set color of embed to red
+							set title of embed to "LINKING"
+							set description of embed to "This player already has a link request!. **[/link decline]** **[/link accept]**"
+						set timestamp of embed to now
+						reply with last made embed
+						stop
+				else:
+					make embed:
+						set color of embed to red
+						set title of embed to "LINKING"
+						set description of embed to "This player is already linked."
+						set timestamp of embed to now
+					reply with last made embed
+					stop
+			else:
+				make embed:
+					set color of embed to red
+					set title of embed to "LINKING"
+					set description of embed to "This player is not online."
+					set timestamp of embed to now
+				reply with last made embed
+				stop
+		else:
+			make embed:
+				set color of embed to red
+				set title of embed to "LINKING"
+				set description of embed to "This player is not online."
+				set timestamp of embed to now
+			reply with last made embed
+			stop
+command /link [<text>]: 
+	trigger:
+		if {linked::%player's uuid%} isn't set:
+			if arg-1 is "accept":
+				if {lr::%player's uuid%} is set:
+					set {linked::%player's uuid%} to {lr::%player's uuid%}
+					clear {lr::%player's uuid%}
+					message "&e&lPRODUCTS &8| &7You &aaccepted &7the link request!"
+					make embed:
+						set color of embed to green
+						set title of embed to "LINKING"
+						set description of embed to "Nice! You are now linked to **`%player%`**"
+						set timestamp of embed to now
+					send "<@%{linked::%player's uuid%}%>" to channel with id "{@bot-chat}"
+					wait 5 ticks
+					send last made embed to channel with id "{@bot-chat}"
+					
+					wait 2 seconds
+					message "&e&lPRODUCTS &8| &7You are now linked!"
+					set {_user} to user with id "%{linked::%player's uuid%}%"
+					set discord nickname of {_user} to "%player's group in uppercase% | %player%"
+					make embed:
+						set title of embed to "LINK"
+						set color of embed to black
+						set description of embed to "%mention tag of {_user}% has linked to `%player%`"
+						set timestamp of embed to now
+						set footer of embed to "Link Logger"
+					send last made embed to channel with id "{@link-logs}"
+					
+					# {{ Link rewards here }} #
+					add 0.3 to {pmulti::%player's uuid%}
+					add 5 to {pgens::%player's uuid%}
+					# {{ Link rewards here }} #
+					
+			if arg-1 is "decline":
+				clear {lr::%player's uuid%}
+				message "&e&lPRODUCTS &8| &7You &cdeclined &7the link request!"
+			if arg-1 isn't set:
+				message "&e&lPRODUCTS &8| &7Please put &b/link accept &7or &b/link decline&7!"
+

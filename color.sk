@@ -1,0 +1,1194 @@
+options:
+	prefix: &e&lPACKAGES &8●
+
+on load:
+    broadcast "&8&m                                                            &7"
+    broadcast ""
+    broadcast "<##458cb2>&lSkript &8● &7Reloaded <##5fc1f5>%script%.sk &7it took <##5fc1f5>%difference between {skript.timer} and now%"
+    broadcast ""
+    broadcast "&8&m                                                            &7"
+    play sound "block.note_block.chime" to all players
+    delete {skript.timer}
+
+on unload:
+    set {skript.timer} to now
+
+on unload: 
+	broadcast "{@prefix} &cReloading big skript, may lag!"
+
+on join:
+	if {chatcolor::%player's uuid%} isn't set:
+		set {chatcolor::%player's uuid%} to "&7"
+
+command /resetallchatcolors:
+	permission: *
+	trigger:
+		set {chatcolor::*} to "&7"
+
+function guiChatColor(p: player, page: number = 1):
+	set {_uuid} to {_p}'s uuid
+	if {_page} = 1:
+		create gui with virtual chest inventory with 3 rows named "&cPick ChatColor":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			make gui 10 with red dye named "&cRed ChatColors":
+				guiChatColor({_p}, 2)
+			make gui 11 with blue dye named "&cBlue ChatColors":
+				guiChatColor({_p}, 3)
+			make gui 12 with green dye named "&cGreen ChatColors":
+				guiChatColor({_p}, 4)
+			make gui 13 with orange dye named "&cOrange ChatColors":
+				guiChatColor({_p}, 5)
+			make gui 14 with purple dye named "&cPurple ChatColors":
+				guiChatColor({_p}, 6)
+			make gui 16 with book named "&cMisc ChatColors":
+				guiChatColor({_p}, 7)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 2:
+		create gui with virtual chest inventory with 4 rows named "&cRed ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##880808>":
+					make gui 10 with shiny nametag named "<##880808>Blood Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 10 with nametag named "<##880808>Blood Red" with lore "", "&7Click to select the chatcolor Blood Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##880808>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 10 with barrier named "<##880808>Blood Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##AA4A44>":
+					make gui 11 with shiny nametag named "<##AA4A44>Blood Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 11 with nametag named "<##AA4A44>Brick Red" with lore "", "&7Click to select the chatcolor Brick Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##AA4A44>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 11 with barrier named "<##AA4A44>Brick Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##EE4B2B>":
+					make gui 12 with shiny nametag named "<##EE4B2B>Bright Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 12 with nametag named "<##EE4B2B>Bright Red" with lore "", "&7Click to select the chatcolor Bright Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##EE4B2B>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 12 with barrier named "<##EE4B2B>Bright Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##A52A2A>":
+					make gui 13 with shiny nametag named "<##A52A2A>Brown" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 13 with nametag named "<##A52A2A>Brown" with lore "", "&7Click to select the chatcolor Brown!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##A52A2A>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 13 with barrier named "<##A52A2A>Brown" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##800020>":
+					make gui 14 with shiny nametag named "<##800020>Burgundy" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 14 with nametag named "<##800020>Burgundy" with lore "", "&7Click to select the chatcolor Burgundy!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##800020>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 14 with barrier named "<##800020>Burgundy" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##FF2400>":
+					make gui 15 with shiny nametag named "<##FF2400>Scarlet" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 15 with nametag named "<##FF2400>Scarlet" with lore "", "&7Click to select the chatcolor Scarlet!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF2400>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 15 with barrier named "<##FF2400>Scarlet" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##FF4433>":
+					make gui 16 with shiny nametag named "<##FF4433>Red Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 16 with nametag named "<##FF4433>Red Orange" with lore "", "&7Click to select the chatcolor Red Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF4433>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 16 with barrier named "<##FF4433>Red Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##FF0000>":
+					make gui 19 with shiny nametag named "<##FF0000>Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 19 with nametag named "<##FF0000>Red" with lore "", "&7Click to select the chatcolor Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF0000>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 19 with barrier named "<##FF0000>Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##E35335>":
+					make gui 20 with shiny nametag named "<##E35335>Poppy" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 20 with nametag named "<##E35335>Poppy" with lore "", "&7Click to select the chatcolor Poppy!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##E35335>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 20 with barrier named "<##E35335>Poppy" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##FF3131>":
+					make gui 21 with shiny nametag named "<##FF3131>Neon Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 21 with nametag named "<##FF3131>Neon Red" with lore "", "&7Click to select the chatcolor Neon Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF3131>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 21 with barrier named "<##FF3131>Neon Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##DC143C>":
+					make gui 22 with shiny nametag named "<##DC143C>Crimson" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 22 with nametag named "<##DC143C>Crimson" with lore "", "&7Click to select the chatcolor Crimson!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##DC143C>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 22 with barrier named "<##DC143C>Crimson" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##8B0000>":
+					make gui 23 with shiny nametag named "<##8B0000>Dark Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 23 with nametag named "<##8B0000>Dark Red" with lore "", "&7Click to select the chatcolor Dark Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##8B0000>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 23 with barrier named "<##8B0000>Dark Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##7B1818>":
+					make gui 24 with shiny nametag named "<##7B1818>Falu Red" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 24 with nametag named "<##7B1818>Falu Red" with lore "", "&7Click to select the chatcolor Falu Red!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##7B1818>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 24 with barrier named "<##7B1818>Falu Red" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.red":
+				if {chatcolor::%{_uuid}%} = "<##9A2A2A>":
+					make gui 25 with shiny nametag named "<##9A2A2A>Garnet" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 2)
+				else:
+					make gui 25 with nametag named "<##9A2A2A>Garnet" with lore "", "&7Click to select the chatcolor Garnet!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##9A2A2A>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 2)
+			else:
+				make gui 25 with barrier named "<##9A2A2A>Garnet" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+			make gui 35 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 3:
+		create gui with virtual chest inventory with 4 rows named "&cBlue ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##00FFFF>":
+					make gui 10 with shiny nametag named "<##00FFFF>Aqua" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 10 with nametag named "<##00FFFF>Aqua" with lore "", "&7Click to select the chatcolor Aqua!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##00FFFF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 10 with barrier named "<##00FFFF>Aqua" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##F0FFFF>":
+					make gui 11 with shiny nametag named "<##F0FFFF>Azure" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 11 with nametag named "<##F0FFFF>Azure" with lore "", "&7Click to select the chatcolor Azure!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##F0FFFF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 11 with barrier named "<##F0FFFF>Azure" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##89CFF0>":
+					make gui 12 with shiny nametag named "<##89CFF0>Baby Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 12 with nametag named "<##89CFF0>Baby Blue" with lore "", "&7Click to select the chatcolor Baby Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##89CFF0>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 12 with barrier named "<##89CFF0>Baby Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##0000FF>":
+					make gui 13 with shiny nametag named "<##0000FF>Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 13 with nametag named "<##0000FF>Blue" with lore "", "&7Click to select the chatcolor Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##0000FF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 13 with barrier named "<##0000FF>Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##7393B3>":
+					make gui 14 with shiny nametag named "<##7393B3>Blue Gray" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 14 with nametag named "<##7393B3>Blue Gray" with lore "", "&7Click to select the chatcolor Blue Gray!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##7393B3>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 14 with barrier named "<##7393B3>Blue Gray" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##088F8F>":
+					make gui 15 with shiny nametag named "<##088F8F>Blue Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 15 with nametag named "<##088F8F>Blue Green" with lore "", "&7Click to select the chatcolor Blue Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##088F8F>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 15 with barrier named "<##088F8F>Blue Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##0096FF>":
+					make gui 16 with shiny nametag named "<##0096FF>Bright Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 16 with nametag named "<##0096FF>Bright Blue" with lore "", "&7Click to select the chatcolor Bright Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##0096FF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 16 with barrier named "<##0096FF>Bright Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##5F9EA0>":
+					make gui 19 with shiny nametag named "<##5F9EA0>Cadet Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 19 with nametag named "<##5F9EA0>Cadet Blue" with lore "", "&7Click to select the chatcolor Cadet Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##5F9EA0>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 19 with barrier named "<##5F9EA0>Cadet Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##0047AB>":
+					make gui 20 with shiny nametag named "<##0047AB>Cobalt Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 20 with nametag named "<##0047AB>Cobalt Blue" with lore "", "&7Click to select the chatcolor Cobalt Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##0047AB>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 20 with barrier named "<##0047AB>Cobalt Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##6495ED>":
+					make gui 21 with shiny nametag named "<##6495ED>Cornflower Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 21 with nametag named "<##6495ED>Cornflower Blue" with lore "", "&7Click to select the chatcolor Cornflower Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##6495ED>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 21 with barrier named "<##6495ED>Cornflower Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##00FFFF>":
+					make gui 22 with shiny nametag named "<##00FFFF>Cyan" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 22 with nametag named "<##00FFFF>Cyan" with lore "", "&7Click to select the chatcolor Cyan!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##00FFFF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 22 with barrier named "<##00FFFF>Cyan" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##00008B>":
+					make gui 23 with shiny nametag named "<##00008B>Dark Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 23 with nametag named "<##00008B>Dark Blue" with lore "", "&7Click to select the chatcolor Dark Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##00008B>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 23 with barrier named "<##00008B>Dark Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##1434A4>":
+					make gui 24 with shiny nametag named "<##1434A4>Egyptian Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 24 with nametag named "<##1434A4>Egyptian Blue" with lore "", "&7Click to select the chatcolor Egyptian Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##1434A4>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 24 with barrier named "<##1434A4>Egyptian Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.blue":
+				if {chatcolor::%{_uuid}%} = "<##7DF9FF>":
+					make gui 25 with shiny nametag named "<##7DF9FF>Electric Blue" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 3)
+				else:
+					make gui 25 with nametag named "<##7DF9FF>Electric Blue" with lore "", "&7Click to select the chatcolor Electric Blue!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##7DF9FF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 3)
+			else:
+				make gui 25 with barrier named "<##7DF9FF>Electric Blue" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+			make gui 35 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 4:
+		create gui with virtual chest inventory with 4 rows named "&cGreen ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##50C878>":
+					make gui 10 with shiny nametag named "<##50C878>Emerald Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 10 with nametag named "<##50C878>Emerald Green" with lore "", "&7Click to select the chatcolor Emerald Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##50C878>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 10 with barrier named "<##50C878>Emerald Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##4F7942>":
+					make gui 11 with shiny nametag named "<##4F7942>Fern Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 11 with nametag named "<##4F7942>Fern Green" with lore "", "&7Click to select the chatcolor Fern Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##4F7942>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 11 with barrier named "<##4F7942>Fern Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##228B22>":
+					make gui 12 with shiny nametag named "<##228B22>Forest Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 12 with nametag named "<##228B22>Forest Green" with lore "", "&7Click to select the chatcolor Forest Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##228B22>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 12 with barrier named "<##228B22>Forest Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##7CFC00>":
+					make gui 13 with shiny nametag named "<##7CFC00>Grass Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 13 with nametag named "<##7CFC00>Grass Green" with lore "", "&7Click to select the chatcolor Grass Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##7CFC00>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 13 with barrier named "<##7CFC00>Grass Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##008000>":
+					make gui 14 with shiny nametag named "<##008000>Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 14 with nametag named "<##008000>Green" with lore "", "&7Click to select the chatcolor Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##008000>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 14 with barrier named "<##008000>Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##355E3B>":
+					make gui 15 with shiny nametag named "<##355E3B>Hunter Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 15 with nametag named "<##355E3B>Hunter Green" with lore "", "&7Click to select the chatcolor Hunter Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##355E3B>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 15 with barrier named "<##355E3B>Hunter Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##00A36C>":
+					make gui 16 with shiny nametag named "<##00A36C>Jade" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 16 with nametag named "<##00A36C>Jade" with lore "", "&7Click to select the chatcolor Jade!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##00A36C>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 16 with barrier named "<##00A36C>Jade" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##4CBB17>":
+					make gui 19 with shiny nametag named "<##4CBB17>Kelly Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 19 with nametag named "<##4CBB17>Kelly Green" with lore "", "&7Click to select the chatcolor Kelly Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##4CBB17>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 19 with barrier named "<##4CBB17>Kelly Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##90EE90>":
+					make gui 20 with shiny nametag named "<##90EE90>Light Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 20 with nametag named "<##90EE90>Light Green" with lore "", "&7Click to select the chatcolor Light Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##90EE90>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 20 with barrier named "<##90EE90>Light Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##32CD32>":
+					make gui 21 with shiny nametag named "<##32CD32>Lime Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 21 with nametag named "<##32CD32>Lime Green" with lore "", "&7Click to select the chatcolor Lime Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##32CD32>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 21 with barrier named "<##32CD32>Lime Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##478778>":
+					make gui 22 with shiny nametag named "<##478778>Lincoln Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 22 with nametag named "<##478778>Lincoln Green" with lore "", "&7Click to select the chatcolor Lincoln Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##478778>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 22 with barrier named "<##478778>Lincoln Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##0BDA51>":
+					make gui 23 with shiny nametag named "<##0BDA51>Malachite" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 23 with nametag named "<##0BDA51>Malachite" with lore "", "&7Click to select the chatcolor Malachite!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##0BDA51>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 23 with barrier named "<##0BDA51>Malachite" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##98FB98>":
+					make gui 24 with shiny nametag named "<##98FB98>Mint Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 24 with nametag named "<##98FB98>Mint Green" with lore "", "&7Click to select the chatcolor Mint Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##98FB98>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 24 with barrier named "<##98FB98>Mint Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.green":
+				if {chatcolor::%{_uuid}%} = "<##0FFF50>":
+					make gui 25 with shiny nametag named "<##0FFF50>Neon Green" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 4)
+				else:
+					make gui 25 with nametag named "<##0FFF50>Neon Green" with lore "", "&7Click to select the chatcolor Neon Green!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##0FFF50>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 4)
+			else:
+				make gui 25 with barrier named "<##0FFF50>Neon Green" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+			make gui 35 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 5:
+		create gui with virtual chest inventory with 4 rows named "&cOrange ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FFBF00>":
+					make gui 10 with shiny nametag named "<##FFBF00>Amber" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 10 with nametag named "<##FFBF00>Amber" with lore "", "&7Click to select the chatcolor Amber!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FFBF00>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 10 with barrier named "<##FFBF00>Amber" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FFAC1C>":
+					make gui 11 with shiny nametag named "<##FFAC1C>Bright Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 11 with nametag named "<##FFAC1C>Bright Orange" with lore "", "&7Click to select the chatcolor Bright Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FFAC1C>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 11 with barrier named "<##FFAC1C>Bright Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##CD7F32>":
+					make gui 12 with shiny nametag named "<##CD7F32>Bronze" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 12 with nametag named "<##CD7F32>Bronze" with lore "", "&7Click to select the chatcolor Bronze!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##CD7F32>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 12 with barrier named "<##CD7F32>Bronze" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##CD7F32>":
+					make gui 13 with shiny nametag named "<##CD7F32>Bronze" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 13 with nametag named "<##CD7F32>Bronze" with lore "", "&7Click to select the chatcolor Bronze!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##CD7F32>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 13 with barrier named "<##CD7F32>Bronze" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##CC5500>":
+					make gui 13 with shiny nametag named "<##CC5500>Burnt Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 13 with nametag named "<##CC5500>Burnt Orange" with lore "", "&7Click to select the chatcolor Burnt Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##CC5500>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 13 with barrier named "<##CC5500>Burnt Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##E3963E>":
+					make gui 14 with shiny nametag named "<##E3963E>Butterscotch" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 14 with nametag named "<##E3963E>Butterscotch" with lore "", "&7Click to select the chatcolor Butterscotch!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##E3963E>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 14 with barrier named "<##E3963E>Butterscotch" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##F28C28>":
+					make gui 15 with shiny nametag named "<##F28C28>Cadmium Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 15 with nametag named "<##F28C28>Cadmium Orange" with lore "", "&7Click to select the chatcolor Cadmium Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##F28C28>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 15 with barrier named "<##F28C28>Cadmium Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##D27D2D>":
+					make gui 16 with shiny nametag named "<##D27D2D>Cinnamon" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 16 with nametag named "<##D27D2D>Cinnamon" with lore "", "&7Click to select the chatcolor Cinnamon!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##D27D2D>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 16 with barrier named "<##D27D2D>Cinnamon" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##E49B0F>":
+					make gui 19 with shiny nametag named "<##E49B0F>Gamboge" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 19 with nametag named "<##E49B0F>Gamboge" with lore "", "&7Click to select the chatcolor Gamboge!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##E49B0F>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 19 with barrier named "<##E49B0F>Gamboge" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FFC000>":
+					make gui 20 with shiny nametag named "<##FFC000>Golden Yellow" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 20 with nametag named "<##FFC000>Golden Yellow" with lore "", "&7Click to select the chatcolor Golden Yellow!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FFC000>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 20 with barrier named "<##FFC000>Golden Yellow" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##DAA520>":
+					make gui 21 with shiny nametag named "<##DAA520>Goldenrod" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 21 with nametag named "<##DAA520>Goldenrod" with lore "", "&7Click to select the chatcolor Goldenrod!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##DAA520>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 21 with barrier named "<##DAA520>Goldenrod" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##F4BB44>":
+					make gui 22 with shiny nametag named "<##F4BB44>Mango" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 22 with nametag named "<##F4BB44>Mango" with lore "", "&7Click to select the chatcolor Mango!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##F4BB44>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 22 with barrier named "<##F4BB44>Mango" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FF5F1F>":
+					make gui 23 with shiny nametag named "<##FF5F1F>Neon Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 23 with nametag named "<##FF5F1F>Neon Orange" with lore "", "&7Click to select the chatcolor Neon Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF5F1F>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 23 with barrier named "<##FF5F1F>Neon Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FFA500>":
+					make gui 24 with shiny nametag named "<##FFA500>Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 24 with nametag named "<##FFA500>Orange" with lore "", "&7Click to select the chatcolor Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FFA500>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 24 with barrier named "<##FFA500>Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+				
+			if {_p} has permission "color.orange":
+				if {chatcolor::%{_uuid}%} = "<##FF7518>":
+					make gui 25 with shiny nametag named "<##FF7518>Pumpkin Orange" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 5)
+				else:
+					make gui 25 with nametag named "<##FF7518>Pumpkin Orange" with lore "", "&7Click to select the chatcolor Pumpkin Orange!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##FF7518>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 5)
+			else:
+				make gui 25 with barrier named "<##FF7518>Pumpkin Orange" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+			make gui 35 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 6:
+		create gui with virtual chest inventory with 4 rows named "&cPurple ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##9F2B68>":
+					make gui 10 with shiny nametag named "<##9F2B68>Amaranth" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 10 with nametag named "<##9F2B68>Amaranth" with lore "", "&7Click to select the chatcolor Amaranth!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##9F2B68>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 10 with barrier named "<##9F2B68>Amaranth" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##BF40BF>":
+					make gui 11 with shiny nametag named "<##BF40BF>Bright Purple" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 11 with nametag named "<##BF40BF>Bright Purple" with lore "", "&7Click to select the chatcolor Bright Purple!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##BF40BF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 11 with barrier named "<##BF40BF>Bright Purple" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##702963>":
+					make gui 12 with shiny nametag named "<##702963>Byzantium" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 12 with nametag named "<##702963>Byzantium" with lore "", "&7Click to select the chatcolor Byzantium!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##702963>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 12 with barrier named "<##702963>Byzantium" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##AA336A>":
+					make gui 13 with shiny nametag named "<##AA336A>Dark Pink" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 13 with nametag named "<##AA336A>Dark Pink" with lore "", "&7Click to select the chatcolor Dark Pink!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##AA336A>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 13 with barrier named "<##AA336A>Dark Pink" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##5D3FD3>":
+					make gui 14 with shiny nametag named "<##5D3FD3>Iris" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 14 with nametag named "<##5D3FD3>Iris" with lore "", "&7Click to select the chatcolor Iris!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##5D3FD3>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 14 with barrier named "<##5D3FD3>Iris" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##CF9FFF>":
+					make gui 15 with shiny nametag named "<##CF9FFF>Light Violet" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 15 with nametag named "<##CF9FFF>Light Violet" with lore "", "&7Click to select the chatcolor Light Violet!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##CF9FFF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 15 with barrier named "<##CF9FFF>Light Violet" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##E0B0FF>":
+					make gui 16 with shiny nametag named "<##E0B0FF>Mauve" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 16 with nametag named "<##E0B0FF>Mauve" with lore "", "&7Click to select the chatcolor Mauve!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##E0B0FF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 16 with barrier named "<##E0B0FF>Mauve" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##DA70D6>":
+					make gui 19 with shiny nametag named "<##DA70D6>Orchid" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 19 with nametag named "<##DA70D6>Orchid" with lore "", "&7Click to select the chatcolor Orchid!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##DA70D6>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 19 with barrier named "<##DA70D6>Orchid" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##C3B1E1>":
+					make gui 20 with shiny nametag named "<##C3B1E1>Pastel Purple" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 20 with nametag named "<##C3B1E1>Pastel Purple" with lore "", "&7Click to select the chatcolor Pastel Purple!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##C3B1E1>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 20 with barrier named "<##C3B1E1>Pastel Purple" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##CCCCFF>":
+					make gui 21 with shiny nametag named "<##CCCCFF>Periwinkle" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 21 with nametag named "<##CCCCFF>Periwinkle" with lore "", "&7Click to select the chatcolor Periwinkle!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##CCCCFF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 21 with barrier named "<##CCCCFF>Periwinkle" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##800080>":
+					make gui 22 with shiny nametag named "<##800080>Purple" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 22 with nametag named "<##800080>Purple" with lore "", "&7Click to select the chatcolor Purple!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##800080>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 22 with barrier named "<##800080>Purple" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##953553>":
+					make gui 23 with shiny nametag named "<##953553>Red Purple" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 23 with nametag named "<##953553>Red Purple" with lore "", "&7Click to select the chatcolor Red Purple!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##953553>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 23 with barrier named "<##953553>Red Purple" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##630330>":
+					make gui 24 with shiny nametag named "<##630330>Tyrian Purple" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 24 with nametag named "<##630330>Tyrian Purple" with lore "", "&7Click to select the chatcolor Tyrian Purple!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##630330>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 24 with barrier named "<##630330>Tyrian Purple" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.purple":
+				if {chatcolor::%{_uuid}%} = "<##7F00FF>":
+					make gui 25 with shiny nametag named "<##7F00FF>Violet" with lore "", "&aThis is currently your chatcolor!", "" and "&8➤ &7Click to unselect this chatcolor!":
+						set {chatcolor::%{_uuid}%} to ""
+						message "{@prefix} &7You have removed this chatcolor!"
+						guiChatColor({_p}, 6)
+				else:
+					make gui 25 with nametag named "<##7F00FF>Violet" with lore "", "&7Click to select the chatcolor Violet!", "" and "&8➤ &7Click to select this chatcolor!":
+						set {chatcolor::%{_uuid}%} to "<##7F00FF>"
+						message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+						guiChatColor({_p}, 6)
+			else:
+				make gui 25 with barrier named "<##7F00FF>Violet" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+			make gui 35 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+
+	else if {_page} = 7:
+		create gui with virtual chest inventory with 3 rows named "&cMisc ChatColors":
+			make gui (integers between 0 and 100) with gray stained glass pane named " "
+			if {_p} has permission "color.misc":
+				make gui 11 with nametag named "%{chatcolor::%{_uuid}%}%&lBOLD" with lore "", "&7Click to select the chatcolor BOLD!", "" and "&8➤ &7Click to select this chatcolor!":
+					set {chatcolor::%{_uuid}%} to "%{chatcolor::%{_uuid}%}%&l"
+					message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+					guiChatColor({_p}, 7)
+			else:
+				make gui 11 with barrier named "%{chatcolor::%{_uuid}%}%&lBOLD" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.misc":
+				make gui 13 with nametag named "%{chatcolor::%{_uuid}%}%&oItalic" with lore "", "&7Click to select the chatcolor ITALIC!", "" and "&8➤ &7Click to select this chatcolor!":
+					set {chatcolor::%{_uuid}%} to "%{chatcolor::%{_uuid}%}%&o"
+					message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+					guiChatColor({_p}, 7)
+			else:
+				make gui 13 with barrier named "%{chatcolor::%{_uuid}%}%&oItalic" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+
+			if {_p} has permission "color.misc":
+				make gui 15 with nametag named "%{chatcolor::%{_uuid}%}%&nUnderline" with lore "", "&7Click to select the chatcolor UNDERLINE!", "" and "&8➤ &7Click to select this chatcolor!":
+					set {chatcolor::%{_uuid}%} to "%{chatcolor::%{_uuid}%}%&n"
+					message "{@prefix} &7Successfully selected the chatcolor &f%colored name of clicked slot%&7!"
+					guiChatColor({_p}, 7)
+			else:
+				make gui 15 with barrier named "%{chatcolor::%{_uuid}%}%&nUnderline" with lore "", "&cCan't select this chatcolor!", "&cDont have the right permissions" and ""
+
+			make gui 26 with feather named "&c&lBACK" with lore "", "&7Click to go back to the main menu!", "" and "&8➤ &7Click to go back!":
+				guiChatColor({_p}, 1)
+		open last gui for {_p}
+
+
+
+command /chatcolor:
+	trigger:
+		guiChatColor(player, 1)
+
+

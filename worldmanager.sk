@@ -1,0 +1,41 @@
+command /manageworld:
+	permission: op
+	trigger:
+		create gui with virtual chest inventory named "&0&lWORLD MANAGER":
+		
+			make gui slot 10 with chest named "&aKeep Inventory" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule keepInventory true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule keepInventory false"
+			make gui slot 11 with clock named "&aDay/Night Cycle" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule doDaylightCycle true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule doDaylightCycle false"
+			make gui slot 12 with compass named "&aWeather Cycle" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule doWeatherCycle true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule doWeatherCycle false"
+			make gui slot 13 with gold ingot named "&aImmediate Respawn" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule doImmediateRespawn true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule doImmediateRespawn false"
+			make gui slot 14 with lava bucket named "&aDo Fire Tick" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule doFireTick true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule doFireTick false"
+			make gui slot 15 with zombie head named "&aDo Mob Spawning" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule doMobSpawning true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule doMobSpawning false"
+			make gui slot 16 with blaze rod named "&aAnnounce Advancements" with lore "&8&l&m---------------" and "&fLeft Click: &aTrue" and "&fRight Click: &cFalse" and "&8&l&m---------------":
+				if "%click type%" is "left mouse button":
+					player command "/gamerule announceAdvancements true"
+				if "%click type%" is "right mouse button":
+					player command "/gamerule announceAdvancements false"
+		open last gui to player

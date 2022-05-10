@@ -1,0 +1,150 @@
+function format(n: number) :: text:
+	set {_data} to "NGTN,90|OTGN,87|STGN,84|HNGT,81|QTGTN,78|QTGT,75|TGT,72|DGT,69|UG,66|V,63|NVD,60|OD,57|SPT,54|HD,51|QTD,48|QTW,45|TD,42|DD,39|UD,36|D,33|N,30|OCT,27|SP,24|HT,21|QT,18|Q,15|T,12|B,9|M,6|k,3"
+	loop split {_data} at "|":
+		set {_s::*} to split loop-value at ","
+		{_n} >= 10 ^ {_s::2} parsed as number
+		return "%{_n} / 10 ^ {_s::2} parsed as number%%{_s::1}%"
+	return "%{_n}%"
+	
+function regex(n: object) :: text:
+    if "%{_n}%" contains ".":
+        set {_s::*} to split "%{_n}%" at "."
+        set {_n} to "%a({_s::1})%.%last 2 characters of {_s::2}%"
+        return "%{_n}%"
+    else:
+        set {_n} to a("%{_n}%")
+        return "%{_n} ? 0%"
+		
+function a(b: text) :: text:
+    if length of {_b} > 3:
+        return "%a(first length of {_b} - 3 characters of {_b})%,%last 3 charactersaaa of {_b}%"
+    return {_b}
+	
+	
+								
+function purchaseItem(p: player, i: itemtype, n: integer, c: number):
+	set {_u} to uuid of {_p}
+	if {balance::%{_u}%} >= {_c}:
+		remove {_c} from {balance::%{_u}%}
+		message "&aYou purchase &2%{_n}% &aof &2%{_i}% &afor &2$%regex({_c})%" to {_p}
+		add {_n} of {_i} to {_p}'s inventory
+	else:
+		close {_p}'s inventory
+		send action bar "&c&lERROR: &cNOT ENOUGH MONEY!" to {_p}
+		
+		
+
+	
+
+function setHex(plr: player, tr1: integer, tg1: integer, tb1: integer, tr2: integer, tg2: integer, tb2: integer):
+	set {r1.%{_plr}%} to {_tr1}
+	set {g1.%{_plr}%} to {_tg1}
+	set {b1.%{_plr}%} to {_tb1}
+	set {r2.%{_plr}%} to {_tr2}
+	set {g2.%{_plr}%} to {_tg2}
+	set {b2.%{_plr}%} to {_tb2}
+	
+function hex(r: integer, g: integer, b: integer) :: text:
+	set {_s} to (2^24)
+	set {_red} to {_r} * (2^16)
+	set {_green} to {_g} * (2^8)
+	set {_hex} to radix 16 of ({_s} + {_red} + {_green} + {_b})
+	set {_hex} to last (length of {_hex} - 1) characters of {_hex}
+	set {_hex} to "<##%{_hex}%>"
+	return {_hex}
+
+function HexToRGB(hex: string) :: numbers:
+    replace all "##" with "" in {_hex}
+    set {_s::*} to split "0123456789abcdefklmnor" at ""
+    loop 3 times:
+        set {_n} to subtext of {_hex} from characters (loop-value -1)*2+1  to loop-value*2
+        loop {_s::*}:
+            add loop-index parsed as number-1 to {_rgb::%loop-value-1%} if 2nd element out of (split {_n} at "") = loop-value-2
+            add (loop-index parsed as number-1)*16 to {_rgb::%loop-value-1%} if first element out of (split {_n} at "") = loop-value-2  
+    return {_rgb::*}
+
+function gradientFade(text1: text, r1: integer, g1: integer, b1: integer, r2: integer, g2: integer, b2: integer, code: text) :: text:
+	loop length of {_text1} times:
+		set {_ir} to ((length of {_text1} - loop-number) / length of {_text1})
+		set {_i} to (loop-number / length of {_text1})
+		if {_r1} > {_r2}:
+			set {_r} to ceil({_r1} + ({_r2} - {_r1}) * {_i})
+		else:
+			set {_r} to ceil({_r2} + ({_r1} - {_r2}) * {_ir})
+		if {_g1} > {_g2}:
+			set {_g} to ceil({_g1} + ({_g2} - {_g1}) * {_i})
+		else:
+			set {_g} to ceil({_g2} + ({_g1} - {_g2}) * {_ir})
+		if {_b1} > {_b2}:
+			set {_b} to ceil({_b1} + ({_b2} - {_b1}) * {_i})
+		else:
+			set {_b} to ceil({_b2} + ({_b1} - {_b2}) * {_ir})
+		set {_l} to characters at loop-value in {_text1}
+		if {_code} is "none":
+			if {_hexvalue} is not set:
+				set {_hexvalue} to "%hex({_r}, {_g}, {_b})%%{_l}%"
+			else:
+				set {_hexvalue} to "%{_hexvalue}%%hex({_r}, {_g}, {_b})%%{_l}%"
+		else:
+			if {_hexvalue} is not set:
+				set {_hexvalue} to "%hex({_r}, {_g}, {_b})%%{_code}%%{_l}%"
+			else:
+				set {_hexvalue} to "%{_hexvalue}%%hex({_r}, {_g}, {_b})%%{_code}%%{_l}%"
+	return {_hexvalue}
+	
+function getColors(p: offline player, t: text, magic: text) :: text:
+	if {_p} is set:
+		set {_hex1} to ""
+		set {_hex2} to ""
+		set {_p} to colored prefix of "%{_p}%" parsed as offline player
+		set {_r} to "%{_p}%"
+		set {_c} to length of {_r}-7
+		loop integers between 1 and 7:
+			set {_int} to "%char at loop-integer in {_r}%"
+			set {_hex1} to "%{_hex1}%%{_int}%"
+		set {_n1} to {_c}-12
+		set {_n2} to {_c}-6
+		loop integers between {_n1} and {_n2}:
+			set {_int} to "%char at loop-integer in {_r}%"
+			set {_hex2} to "%{_hex2}%%{_int}%"
+		set {_rgb1::*} to "%HexToRGB({_hex1})%" split at " "
+		set {_rgb2::*} to "%HexToRGB({_hex2})%" split at " "
+		replace all "," in {_rgb1::*} with ""
+		replace all "," in {_rgb2::*} with ""
+		set {_1} to {_rgb1::1} parsed as number
+		set {_2} to {_rgb1::2} parsed as number
+		set {_3} to {_rgb1::4} parsed as number
+		set {_4} to {_rgb2::1} parsed as number
+		set {_5} to {_rgb2::2} parsed as number
+		set {_6} to {_rgb2::4} parsed as number
+		set {_text} to colored gradientFade("%{_t}%", {_1}, {_2}, {_3}, {_4}, {_5}, {_6}, "%{_magic}%")
+		return "%{_text}%"
+			
+function getColor(p: offline player, magic: text) :: text:
+	if {_p} is set:
+		set {_hex1} to ""
+		set {_p} to colored prefix of "%{_p}%" parsed as offline player
+		set {_r} to "%{_p}%"
+		set {_c} to length of {_r}-7
+		loop integers between 1 and 7:
+			set {_int} to "%char at loop-integer in {_r}%"
+			set {_hex1} to "%{_hex1}%%{_int}%"
+		return colored "<%{_hex1}%>%{_magic}%"
+
+function formattime(n: timespan) :: text:
+    set {_a} to "%{_n}%"
+    replace all " seconds" or " second" with "s" in {_a}
+    replace all " minutes" or " minute" with "m" in {_a}
+    replace all " hours" or " hour" with "h" in {_a}
+    replace all " days" or " day" with "d" in {_a}
+    replace all " and" with "" in {_a}
+    return {_a}
+	
+function formattime2(n: timespan) :: text:
+    set {_a} to "%{_n}%"
+    replace all " seconds" or " second" with ":" in {_a}
+    replace all " minutes" or " minute" with ":" in {_a}
+    replace all " hours" or " hour" with ":" in {_a}
+    replace all " days" or " day" with ":" in {_a}
+    replace all " and" with ":" in {_a}
+    return {_a}

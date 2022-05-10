@@ -1,0 +1,23 @@
+command /withdraw [<integer>]:
+	trigger:
+		if arg-1 >= 50:
+			if {balance::%player's uuid%} >= arg-1:
+				remove arg-1 from {balance::%player's uuid%}
+				add 1 of shiny paper named "&f&lBANKNOTE &8[&a$%format(arg-1)%&8]" with lore "&7Click to redeem" to player
+				message "&e&lPRODUCTS &8| &7You've just withdrawn a banknote!"
+on right click:
+	if type of player's held item is paper:
+		if name of player's held item contains "&f&lBANKNOTE":
+			set {_price} to name of player's tool
+			replace all "&f&lBANKNOTE &8[&a$" and "&8]" in {_price} with ""
+			replace all "," and "." in {_price} with ""
+			replace all "k" in {_price} with "000"
+			replace all "m" in {_price} with "000000"
+			replace all "b" in {_price} with "000000000"
+			replace all "t" in {_price} with "000000000000"
+			replace all "q" in {_price} with "000000000000000"
+			replace all "qt" in {_price} with "000000000000000000"
+			set {_add} to {_price} parsed as integer
+			set {balance::%player's uuid%} to {balance::%player's uuid%}+{_add}
+			message "&e&lPRODUCTS &8| &7You just redeemed a banknote, the worth was: &a$%format({_add})%"
+			remove 1 of player's held item from player

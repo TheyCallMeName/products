@@ -1,0 +1,19 @@
+on join:
+  if {IP::%player's ip%::%player%} is not set:
+    set {IP::%player's ip%::%player%} to 1
+  loop {IP::%player's ip%::*}:
+    add loop-index parsed as offlineplayer to {_alts::*} 
+  if amount of {_alts::*} >= 3:
+    wait 1 second
+    send "&e&lPRODUCTS &8» &7%player% &chas more than one alt on their &eIP&7!" to all players where [input has permission "staff"]
+command /resetip:
+  permission: *
+  trigger:
+    delete {IP::*}
+command /checkip [<offlineplayer>]:
+  permission: alts.stuff
+  trigger:
+    loop {IP::%arg-1's ip%::*}:
+      add loop-index parsed as offlineplayer to {_alts::*}
+    send "&e%arg-1% &7has &e%amount of {_alts::*}%&7 Alt(s)"
+    send "&e%{_alts::*}%"
